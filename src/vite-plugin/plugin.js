@@ -83,6 +83,29 @@ function plugin(api_dirs, routes_dir = "src/routes") {
 				const full_path = path.join(path.resolve(api_base_dir, dir), "**/*");
 				server.watcher.add(full_path);
 			}
+
+			server.watcher.on("unlink", (file_path) => {
+				if (endpoint_path_regex.test(file_path)) {
+					route_endpoint_definitions.delete(file_path);
+					queue_files([file_path]);
+				}
+			});
+			server.watcher.on("add", (file_path) => {
+				if (endpoint_path_regex.test(file_path)) {
+					queue_files([file_path]);
+				}
+			});
+
+			queue_files(
+				program
+					.getSourceFiles()
+					.map((source_file) => source_file.fileName)
+					.filter((file_path) => endpoint_path_regex.test(file_path))
+			);
+		},
+
+		handleHotUpdate(ctx) {
+			if (endpoint_path_regex.test(ctx.file)) queue_files([ctx.file]);
 		},
 	};
 }
