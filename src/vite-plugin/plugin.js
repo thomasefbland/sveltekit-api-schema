@@ -1,4 +1,3 @@
-// NOTE: This is massive dependency, look into alternatives?
 import { globSync } from "fast-glob";
 import ts from "typescript";
 import path from "node:path";
@@ -315,11 +314,10 @@ async function write_endpoints_file() {
 		}
 		definitions += "\n";
 	}
-	const content = `import { type UnwrappedResponse, type SvelteFetch } from 'vite-plugin-sveltekit-api-schema';
+	const content = `import { type UnwrappedResponse, type SvelteFetch } from 'sveltekit-api-schema';
 
-declare module 'vite-plugin-sveltekit-api-schema' {
+declare module 'sveltekit-api-schema' {
 ${definitions}
-export { api_fetch as fetch };
 }
 `;
 	await writeFile(path.resolve(project_path, "src/api.d.ts"), content);

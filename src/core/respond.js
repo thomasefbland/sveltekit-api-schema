@@ -1,7 +1,11 @@
 import { NO_CONTENT } from "./HTTP_CODES.js";
 
 /**
- * @type {Record<import("types").ApiHttpCode, string>}
+ * @typedef {200 | 201 | 204 | 400 | 401 | 403 | 404 | 500} ApiHttpCode
+ */
+
+/**
+ * @type {Record<ApiHttpCode, string>}
  */
 const DEFAULT_MESSAGES = {
 	200: "OK",
@@ -42,13 +46,13 @@ const DEFAULT_MESSAGES = {
 
 /**
  * Respond with just a status code.
- * @param {import("types").ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @returns {Promise<APIResponseWithoutData>}
  */
 
 /**
  * Respond with a status code and message.
- * @param {import("types").ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @param {string} message_or_data
  * @returns {Promise<APIResponseWithoutData>}
  */
@@ -56,7 +60,7 @@ const DEFAULT_MESSAGES = {
 /**
  * @template {Dict} Data
  * Respond with status code, message, and data.
- * @param {import("types").ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @param {string} message_or_data
  * @param {Data} data
  * @returns {Promise<APIResponseWithData<{ message: string; data: Data }>>}
@@ -65,14 +69,14 @@ const DEFAULT_MESSAGES = {
 /**
  * @template {Dict} Data
  * Respond with status code and data (auto-message).
- * @param {import('types').ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @param {Data} message_or_data
  * @returns {Promise<APIResponseWithData<{ message: string; data: Data }>>}
  */
 
 /**
  * @template {Dict} Data
- * @param {import("types").ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @param {string | Data} [message_or_data]
  * @param {Data} [data]
  * @returns {Promise<APIResponseWithData<any> | APIResponseWithoutData>}
@@ -98,7 +102,7 @@ export async function respond(status_code, message_or_data, data) {
 /**
  *
  * @template {Dict} Data
- * @param {import("types").ApiHttpCode} status_code
+ * @param {ApiHttpCode} status_code
  * @param {string} message
  * @param {Data} [data]
  * @returns {Response}

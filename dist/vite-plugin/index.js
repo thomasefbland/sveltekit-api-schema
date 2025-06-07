@@ -7347,8 +7347,6 @@ function requireOut () {
 
 var outExports = requireOut();
 
-// NOTE: This is massive dependency, look into alternatives?
-
 /**
  * @typedef {{ route: string; method: import('types').Method; payload_type_string?: string; response_type_string: string }} EndpointDefinition
  */
@@ -7658,11 +7656,10 @@ async function write_endpoints_file() {
 		}
 		definitions += "\n";
 	}
-	const content = `import { type UnwrappedResponse, type SvelteFetch } from 'vite-plugin-sveltekit-api-schema';
+	const content = `import { type UnwrappedResponse, type SvelteFetch } from 'sveltekit-api-schema';
 
-declare module 'vite-plugin-sveltekit-api-schema' {
+declare module 'sveltekit-api-schema' {
 ${definitions}
-export { api_fetch as fetch };
 }
 `;
 	await writeFile(path$1.resolve(project_path, "src/api.d.ts"), content);
