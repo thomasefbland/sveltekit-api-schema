@@ -1,16 +1,3 @@
-export type UnwrappedSuccessfulResponse = {
-    ok: true;
-    json: Record<string, any>;
-};
-export type UnwrappedFailedResponse = {
-    ok: false;
-    json: {
-        message: string;
-    };
-};
-export type UnwrappedResponse = UnwrappedSuccessfulResponse | UnwrappedFailedResponse;
-export type SvelteFetch = (input: RequestInfo | URL | string | globalThis.Request, init?: RequestInit | undefined) => Promise<Response>;
-export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 /**
  * @typedef {Object} UnwrappedSuccessfulResponse
  * @property {true} ok
@@ -44,3 +31,16 @@ export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 export function api_fetch<Data extends Record<string, any>>(route: string, method: Method, payload_or_svelte_fetch?: Record<string, any> | SvelteFetch, svelte_fetch?: SvelteFetch): Promise<UnwrappedResponse & {
     json: Data;
 }>;
+export type UnwrappedSuccessfulResponse = {
+    ok: true;
+    json: Record<string, any>;
+};
+export type UnwrappedFailedResponse = {
+    ok: false;
+    json: {
+        message: string;
+    };
+};
+export type UnwrappedResponse = UnwrappedSuccessfulResponse | UnwrappedFailedResponse;
+export type SvelteFetch = (input: RequestInfo | URL | string | globalThis.Request, init?: RequestInit | undefined) => Promise<Response>;
+export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";

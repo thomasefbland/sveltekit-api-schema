@@ -77,7 +77,7 @@ const DEFAULT_MESSAGES = {
  * @param {Data} [data]
  * @returns {Promise<APIResponseWithData<any> | APIResponseWithoutData>}
  */
-async function respond(status_code, message_or_data, data) {
+export async function respond(status_code, message_or_data, data) {
 	if (status_code === NO_CONTENT) return new Response(null, { status: NO_CONTENT });
 
 	if (message_or_data !== undefined) {
@@ -94,8 +94,6 @@ async function respond(status_code, message_or_data, data) {
 		return build_response(status_code, DEFAULT_MESSAGES[status_code]);
 	}
 }
-
-export default respond;
 
 /**
  *

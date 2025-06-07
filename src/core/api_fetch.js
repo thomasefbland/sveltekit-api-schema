@@ -34,7 +34,7 @@
  * @param {SvelteFetch} [svelte_fetch]
  * @returns {Promise<UnwrappedResponse & { json: Data }>}
  */
-async function api_fetch(route, method, payload_or_svelte_fetch, svelte_fetch) {
+export async function api_fetch(route, method, payload_or_svelte_fetch, svelte_fetch) {
 	const _fetch = svelte_fetch ?? (typeof payload_or_svelte_fetch !== "function" ? fetch : payload_or_svelte_fetch);
 
 	const payload = typeof payload_or_svelte_fetch === "object" && !Array.isArray(payload_or_svelte_fetch) ? payload_or_svelte_fetch : undefined;
@@ -46,5 +46,3 @@ async function api_fetch(route, method, payload_or_svelte_fetch, svelte_fetch) {
 		}).then((/** @type {Response} */ response) => response.json().then((json) => resolve({ ok: response.ok, json })));
 	});
 }
-
-export { api_fetch };

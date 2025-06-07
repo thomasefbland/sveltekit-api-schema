@@ -1,16 +1,3 @@
-export default respond;
-export type Dict = Record<string, any>;
-export type SuccessfulAPIResponse = Response & {
-    ok: true;
-    json: () => Promise<Dict>;
-};
-export type FailedAPIResponse = Response & {
-    ok: false;
-};
-export type APIResponseWithoutData = SuccessfulAPIResponse | FailedAPIResponse;
-export type APIResponseWithData<T> = (SuccessfulAPIResponse & {
-    json(): Promise<T>;
-}) | FailedAPIResponse;
 /**
  * @typedef {Record<string, any>} Dict
  */
@@ -65,4 +52,16 @@ export type APIResponseWithData<T> = (SuccessfulAPIResponse & {
  * @param {Data} [data]
  * @returns {Promise<APIResponseWithData<any> | APIResponseWithoutData>}
  */
-declare function respond<Data extends Dict>(status_code: import("types").ApiHttpCode, message_or_data?: string | Data, data?: Data): Promise<APIResponseWithData<any> | APIResponseWithoutData>;
+export function respond<Data extends Dict>(status_code: import("types").ApiHttpCode, message_or_data?: string | Data, data?: Data): Promise<APIResponseWithData<any> | APIResponseWithoutData>;
+export type Dict = Record<string, any>;
+export type SuccessfulAPIResponse = Response & {
+    ok: true;
+    json: () => Promise<Dict>;
+};
+export type FailedAPIResponse = Response & {
+    ok: false;
+};
+export type APIResponseWithoutData = SuccessfulAPIResponse | FailedAPIResponse;
+export type APIResponseWithData<T> = (SuccessfulAPIResponse & {
+    json(): Promise<T>;
+}) | FailedAPIResponse;
