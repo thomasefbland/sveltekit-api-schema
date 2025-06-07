@@ -31,10 +31,11 @@
 		}
 	},
 	"scripts": {
+		"build:ts": "tsc src/core/respond.ts --declaration false --emitDeclarationOnly false --noEmit false --module nodenext --target ES2020 --moduleResolution nodenext --outDir src/core",
 		"build:barrel": "node scripts/barrel.js",
 		"build:js": "rollup -c",
 		"build:types": "tsc --emitDeclarationOnly",
-		"build": "pnpm build:barrel && pnpm build:js && pnpm build:types"
+		"build": "pnpm build:ts && pnpm build:barrel && pnpm build:js && pnpm build:types"
 	},
 	"dependencies": {
 		"fast-glob": "^3.3.3",

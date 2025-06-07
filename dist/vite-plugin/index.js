@@ -7642,8 +7642,6 @@ function resolve_route(file_path) {
 	let clean_path = relative_path.replace(path$1.extname(relative_path), "");
 	clean_path = clean_path.replace("+server", "");
 	clean_path = clean_path.replace(/\/$/, "");
-	clean_path = clean_path.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-	if (clean_path.startsWith("apps")) clean_path = clean_path.replace("api/", "").replace("apps", "api");
 	return clean_path;
 }
 

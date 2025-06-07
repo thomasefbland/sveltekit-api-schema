@@ -3,7 +3,6 @@
 		"allowJs": true,
 		"checkJs": true,
 		"declaration": true,
-		"emitDeclarationOnly": true,
 		"outDir": "types",
 		"rootDir": "./src",
 		"module": "nodenext",
