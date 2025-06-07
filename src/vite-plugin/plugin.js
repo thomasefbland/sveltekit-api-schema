@@ -119,7 +119,6 @@ let timeout_id = null;
  * @param {Array<string>} file_paths
  */
 function queue_files(file_paths) {
-	console.log(file_paths);
 	for (const file_path of file_paths) {
 		queued_files.add(file_path);
 	}
