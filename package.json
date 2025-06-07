@@ -1,0 +1,48 @@
+{
+	"name": "sveltekit-api-schema",
+	"version": "1.0.0",
+	"description": "Runtime json response unwrapping, dev time type inference. Requires typescript and zod. Requires vite for using built in type generation",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"vite",
+		"api",
+		"types"
+	],
+	"type": "module",
+	"license": "MIT",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^28.0.3",
+		"@rollup/plugin-node-resolve": "^16.0.1",
+		"rollup": "^4.42.0",
+		"vite": "6.2.6",
+		"zod": "3.25.56"
+	},
+	"main": "./dist/index.js",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./types/core/index.d.ts"
+		},
+		"./vite-plugin": {
+			"import": "./dist/vite-plugin/index.js",
+			"types": "./types/vite-plugin/index.d.ts"
+		}
+	},
+	"scripts": {
+		"build:barrel": "node scripts/barrel.js",
+		"build:js": "rollup -c",
+		"build:types": "tsc --emitDeclarationOnly",
+		"build": "pnpm build:barrel && pnpm build:js && pnpm build:types"
+	},
+	"dependencies": {
+		"fast-glob": "^3.3.3",
+		"picocolors": "^1.1.1",
+		"typescript": "^5.8.3"
+	},
+	"pnpm": {
+		"overrides": {
+			"vite": "6.2.6"
+		}
+	}
+}

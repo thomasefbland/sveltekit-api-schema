@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"outDir": "types",
+		"rootDir": "./src",
+		"module": "nodenext",
+		"target": "ES2020",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"types": ["./src/types/index.d.ts"]
+		},
+		"types": ["vite"],
+		"moduleResolution": "nodenext"
+	},
+	"include": ["src/core/**/*", "src/vite-plugin/**/*"],
+	"exclude": ["node_modules", "dist/types"]
+}
