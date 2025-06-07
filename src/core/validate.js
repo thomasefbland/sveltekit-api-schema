@@ -1,18 +1,18 @@
+import { ZodError } from "zod/v4";
+
 /**
- * @template {import('zod').AnyZodObject} Payload
- * @typedef {{ success: true; payload: import('zod').infer<Payload>; error: undefined }} Valid
+ * @template {import('zod/v4').ZodObject} Payload
+ * @typedef {{ success: true; payload: import('zod/v4').infer<Payload>; error: undefined }} Valid<Payload>
  */
 
-import { ZodError } from "zod";
-
 /**
- * @template {import('zod').AnyZodObject} Payload
- * @typedef {{ success: false; payload: undefined; error: import('zod').ZodError<import('zod').infer<Payload>> }} Invalid
+ * @template {import('zod/v4').ZodObject} Payload
+ * @typedef {{ success: false; payload: undefined; error: import('zod/v4').ZodError<import('zod/v4').infer<Payload>> }} Invalid<Payload>
  */
 
 /**
  *
- * @template {import('zod').AnyZodObject} Schema
+ * @template {import('zod/v4').ZodObject} Schema
  * @param {Request} request
  * @param {Schema} schema
  * @returns {Promise<Valid<Schema> | Invalid<Schema>>}
@@ -36,14 +36,16 @@ export async function validate(request, schema) {
 			};
 		}
 	} catch {
-		/** @type {import('zod').ZodError<import('zod').infer<Schema>>} */
-		const error = new ZodError([
-			{
-				code: "custom",
-				message: "Invalid JSON in request body",
-				path: [],
-			},
-		]);
+		const error = /** @type {import('zod/v4').ZodError<import('zod/v4').output<Schema>>} */ (
+			new ZodError([
+				{
+					code: "custom",
+					input: undefined,
+					message: "Invalid JSON in request body",
+					path: [],
+				},
+			])
+		);
 
 		return {
 			success: false,

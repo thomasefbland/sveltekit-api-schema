@@ -1,6 +1,6 @@
 {
 	"name": "sveltekit-api-schema",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "Runtime json response unwrapping, dev time type inference. Requires typescript and zod. Requires vite for using built in type generation",
 	"keywords": [
 		"svelte",
