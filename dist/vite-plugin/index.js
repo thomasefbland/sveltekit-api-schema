@@ -7510,11 +7510,16 @@ function parseFile(source_file, type_checker) {
 						if (statement.expression) {
 							let return_type = type_checker.getTypeAtLocation(statement.expression);
 							return_type = type_checker.getAwaitedType(return_type) ?? return_type;
-							const return_type_string = type_checker.typeToString(
+							let return_type_string = type_checker.typeToString(
 								return_type,
 								undefined,
 								ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.WriteTypeArgumentsOfSignature | ts.TypeFormatFlags.UseFullyQualifiedType
 							);
+
+							if (response_type_string?.includes("import(")) {
+								return_type_string = resolve_imported_type(return_type, type_checker);
+							}
+
 							// TODO: Redo this so that it exports multiple kinds of responses to support more complex endpoints
 							// Likely needs some sort of version discriminant added to response
 							/**
@@ -7601,6 +7606,32 @@ function parseFile(source_file, type_checker) {
  *
  * @param {ts.Type} type
  * @param {ts.TypeChecker} type_checker
+ * @returns {string}
+ */
+function resolve_imported_type(type, type_checker) {
+	const symbol = type.getSymbol();
+	if (!symbol) return "null";
+
+	// Get the declaration(s) where the type is defined
+	const declarations = symbol.getDeclarations();
+	if (!declarations || declarations.length === 0) return "null";
+
+	const declaration = declarations[0];
+
+	// Use the checker to get a string representation from the actual declaration
+	const resolved_type = type_checker.getTypeOfSymbolAtLocation(symbol, declaration);
+
+	return type_checker.typeToString(
+		resolved_type,
+		declaration,
+		ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.WriteTypeArgumentsOfSignature | ts.TypeFormatFlags.UseFullyQualifiedType
+	);
+}
+
+/**
+ *
+ * @param {ts.Type} type
+ * @param {ts.TypeChecker} type_checker
  * @returns {string | null}
  */
 function convert_zod_type_to_string(type, type_checker) {
@@ -7658,6 +7689,8 @@ async function write_endpoints_file() {
 
 declare module 'sveltekit-api-schema' {
 ${definitions}
+
+export { api_fetch };
 }
 `;
 	await writeFile(path$1.resolve(project_path, "src/api.d.ts"), content);

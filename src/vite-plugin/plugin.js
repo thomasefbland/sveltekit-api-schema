@@ -347,6 +347,8 @@ async function write_endpoints_file() {
 
 declare module 'sveltekit-api-schema' {
 ${definitions}
+
+export { api_fetch };
 }
 `;
 	await writeFile(path.resolve(project_path, "src/api.d.ts"), content);
