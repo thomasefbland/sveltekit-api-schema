@@ -18,8 +18,14 @@ import { ZodError } from "zod";
  * @returns {Promise<Valid<Schema> | Invalid<Schema>>}
  */
 export async function validate(request, schema) {
+	const content_type = request.headers.get("content-type") || "";
 	try {
-		const json = await request.json();
+		if (content_type.includes("application/json")) {
+			var json = await request.json();
+		} else {
+			const url = new URL(request.url);
+			json = Object.fromEntries(url.searchParams.entries());
+		}
 		const { success, data, error } = schema.safeParse(json);
 
 		if (success) {
