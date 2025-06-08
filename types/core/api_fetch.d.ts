@@ -18,18 +18,29 @@
  * @returns {Promise<Response>}
  */
 /**
- * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'} Method
+ * @typedef {'GET' | 'POST'} Method
  */
+/**
+ * @template {Record<string, any>} Data
+ * @param {string} route
+ * @param {Method} method
+ * @param {Record<string, any> | SvelteFetch} [payload_or_svelte_fetch]
+ * @param {SvelteFetch} [svelte_fetch]
+ * @returns {Promise<UnwrappedResponse & { json: Data }>}
+ */
+export function api_fetch<Data extends Record<string, any>>(route: string, method: Method, payload_or_svelte_fetch?: Record<string, any> | SvelteFetch, svelte_fetch?: SvelteFetch): Promise<UnwrappedResponse & {
+    json: Data;
+}>;
 export type UnwrappedSuccessfulResponse = {
-	ok: true;
-	json: Record<string, any>;
+    ok: true;
+    json: Record<string, any>;
 };
 export type UnwrappedFailedResponse = {
-	ok: false;
-	json: {
-		message: string;
-	};
+    ok: false;
+    json: {
+        message: string;
+    };
 };
 export type UnwrappedResponse = UnwrappedSuccessfulResponse | UnwrappedFailedResponse;
 export type SvelteFetch = (input: RequestInfo | URL | string | globalThis.Request, init?: RequestInit | undefined) => Promise<Response>;
-export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type Method = "GET" | "POST";

@@ -35,7 +35,7 @@ const SERVER_ERROR = 500;
  */
 
 /**
- * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'} Method
+ * @typedef {'GET' | 'POST'} Method
  */
 
 // FIXME: This interface is pretty bad probably now that I think about itx
@@ -50,11 +50,14 @@ const SERVER_ERROR = 500;
 async function api_fetch(route, method, payload_or_svelte_fetch, svelte_fetch) {
 	const _fetch = svelte_fetch ?? (typeof payload_or_svelte_fetch !== "function" ? fetch : payload_or_svelte_fetch);
 
+	const headers = method === "POST" ? [["Content-Type", "application/json"]] : [];
+
 	const payload = typeof payload_or_svelte_fetch === "object" && !Array.isArray(payload_or_svelte_fetch) ? payload_or_svelte_fetch : undefined;
 
 	return new Promise((resolve) => {
 		_fetch(route, {
 			method: method,
+			headers,
 			body: payload ? JSON.stringify(payload) : undefined,
 		}).then((/** @type {Response} */ response) => response.json().then((json) => resolve({ ok: response.ok, json })));
 	});
