@@ -1,7 +1,8 @@
 /**
+ * @template {Record<string, any>} Data
  * @typedef {Object} UnwrappedSuccessfulResponse
  * @property {true} ok
- * @property {Record<string, any>} json
+ * @property {Data} json
  */
 
 /**
@@ -11,7 +12,8 @@
  */
 
 /**
- * @typedef {UnwrappedSuccessfulResponse | UnwrappedFailedResponse} UnwrappedResponse
+ * @template {Record<string, any>} Data
+ * @typedef {UnwrappedSuccessfulResponse<Data> | UnwrappedFailedResponse} UnwrappedResponse
  */
 
 /**
@@ -25,26 +27,26 @@
  * @typedef {'GET' | 'POST'} Method
  */
 
+/**
+ * @typedef {{ route: string; method: Method; payload: Record<string, any> | undefined; svelte_fetch?: SvelteFetch }} FetchOptions
+ */
+
 // FIXME: This interface is pretty bad probably now that I think about itx
 /**
  * @template {Record<string, any>} Data
- * @param {string} route
- * @param {Method} method
- * @param {Record<string, any> | SvelteFetch} [payload_or_svelte_fetch]
- * @param {SvelteFetch} [svelte_fetch]
- * @returns {Promise<UnwrappedResponse & { json: Data }>}
+ * @param {FetchOptions} options
+ * @returns {Promise<UnwrappedResponse<Data>>}
  */
-export async function api_fetch(route, method, payload_or_svelte_fetch, svelte_fetch) {
-	const _fetch = svelte_fetch ?? (typeof payload_or_svelte_fetch !== "function" ? fetch : payload_or_svelte_fetch);
+export async function api_fetch(options) {
+	const { route, method, payload, svelte_fetch } = options;
 
-	const headers = method === "POST" ? [["Content-Type", "application/json"]] : [];
+	const headers = /** @type {HeadersInit} */ (payload ? [["Content-Type", "application/json"]] : []);
 
-	const payload = typeof payload_or_svelte_fetch === "object" && !Array.isArray(payload_or_svelte_fetch) ? payload_or_svelte_fetch : undefined;
-
+	const _fetch = svelte_fetch ?? fetch;
 	return new Promise((resolve) => {
 		_fetch(route, {
 			method: method,
-			headers,
+			headers: headers,
 			body: payload ? JSON.stringify(payload) : undefined,
 		}).then((/** @type {Response} */ response) => response.json().then((json) => resolve({ ok: response.ok, json })));
 	});

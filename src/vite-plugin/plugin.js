@@ -360,6 +360,6 @@ export { api_fetch };
  * @returns {string}
  */
 function build_fetch_params({ route, method, payload_type_string }) {
-	const options_string = payload_type_string ? `payload: ${payload_type_string}, fetch?: SvelteFetch` : "fetch?: SvelteFetch";
-	return `route: "/${route}", method: "${method}", ${options_string}`;
+	const rest = payload_type_string ? `payload: ${payload_type_string}, svelte_fetch?: SvelteFetch` : "svelte_fetch?: SvelteFetch";
+	return `options: { route: "/${route}", method: "${method}", ${rest} }`;
 }

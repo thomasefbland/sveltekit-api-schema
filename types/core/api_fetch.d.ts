@@ -1,7 +1,8 @@
 /**
+ * @template {Record<string, any>} Data
  * @typedef {Object} UnwrappedSuccessfulResponse
  * @property {true} ok
- * @property {Record<string, any>} json
+ * @property {Data} json
  */
 /**
  * @typedef {Object} UnwrappedFailedResponse
@@ -9,7 +10,8 @@
  * @property {{ message: string }} json
  */
 /**
- * @typedef {UnwrappedSuccessfulResponse | UnwrappedFailedResponse} UnwrappedResponse
+ * @template {Record<string, any>} Data
+ * @typedef {UnwrappedSuccessfulResponse<Data> | UnwrappedFailedResponse} UnwrappedResponse
  */
 /**
  * @callback SvelteFetch
@@ -21,26 +23,24 @@
  * @typedef {'GET' | 'POST'} Method
  */
 /**
- * @template {Record<string, any>} Data
- * @param {string} route
- * @param {Method} method
- * @param {Record<string, any> | SvelteFetch} [payload_or_svelte_fetch]
- * @param {SvelteFetch} [svelte_fetch]
- * @returns {Promise<UnwrappedResponse & { json: Data }>}
+ * @typedef {{ route: string; method: Method; payload: Record<string, any> | undefined; svelte_fetch?: SvelteFetch }} FetchOptions
  */
-export function api_fetch<Data extends Record<string, any>>(route: string, method: Method, payload_or_svelte_fetch?: Record<string, any> | SvelteFetch, svelte_fetch?: SvelteFetch): Promise<UnwrappedResponse & {
-    json: Data;
-}>;
-export type UnwrappedSuccessfulResponse = {
-    ok: true;
-    json: Record<string, any>;
+export type UnwrappedSuccessfulResponse<Data extends Record<string, any>> = {
+	ok: true;
+	json: Data;
 };
 export type UnwrappedFailedResponse = {
-    ok: false;
-    json: {
-        message: string;
-    };
+	ok: false;
+	json: {
+		message: string;
+	};
 };
-export type UnwrappedResponse = UnwrappedSuccessfulResponse | UnwrappedFailedResponse;
+export type UnwrappedResponse<Data extends Record<string, any>> = UnwrappedSuccessfulResponse<Data> | UnwrappedFailedResponse;
 export type SvelteFetch = (input: RequestInfo | URL | string | globalThis.Request, init?: RequestInit | undefined) => Promise<Response>;
 export type Method = "GET" | "POST";
+export type FetchOptions = {
+	route: string;
+	method: Method;
+	payload: Record<string, any> | undefined;
+	svelte_fetch?: SvelteFetch;
+};
