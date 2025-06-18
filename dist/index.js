@@ -3,6 +3,7 @@ const CREATED = 201;
 const NO_CONTENT = 204;
 
 const SEE_OTHER = 303;
+const TEMPORARY_REDIRECT = 307;
 
 const BAD_REQUEST = 400;
 const UNAUTHORIZED = 401;
@@ -442,5 +443,5 @@ async function validate(request, schema) {
 // 	}
 // }
 
-export { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, NO_CONTENT, OK, SEE_OTHER, SERVER_ERROR, UNAUTHORIZED, api_fetch, respond, validate };
+export { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, NO_CONTENT, OK, SEE_OTHER, SERVER_ERROR, TEMPORARY_REDIRECT, UNAUTHORIZED, api_fetch, respond, validate };
 //# sourceMappingURL=index.js.map
